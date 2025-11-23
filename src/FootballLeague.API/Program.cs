@@ -1,23 +1,38 @@
+using FootballLeague.API.Endpoints;
+using FootballLeague.API.Extensions;
+using FootballLeague.API.Middleware;
+using FootballLeague.API.Seed;
+using FootballLeague.Data;
+using FootballLeague.Services;
+using Microsoft.FeatureManagement;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddAuthorization();
+builder.Services.AddDataLayer(builder.Configuration);
+builder.Services.AddBusinessLayer();
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+builder.Services.AddFeatureManagement();
+builder.Services.AddScoped<DataSeeder>();
 
-        var app = builder.Build();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+var app = builder.Build();
 
-        app.UseHttpsRedirection();
+await app.ApplyMigrationsAsync();
 
-app.UseAuthorization();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseExceptionHandler();
+app.UseHttpsRedirection();
+
+app.MapTeamEndpoints();
+app.MapMatchEndpoints();
 
 app.Run();
