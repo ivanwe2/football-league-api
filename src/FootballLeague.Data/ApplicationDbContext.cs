@@ -11,6 +11,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        modelBuilder.Entity<Team>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Match>().HasQueryFilter(x => !x.IsDeleted);
+
         base.OnModelCreating(modelBuilder);
     }
 }
