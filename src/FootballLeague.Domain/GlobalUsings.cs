@@ -1,1 +1,1 @@
-﻿global using FootballLeague.Domain.Results;
+﻿global using FootballLeague.Domain.Primitives;

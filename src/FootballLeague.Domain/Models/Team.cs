@@ -1,4 +1,5 @@
 ﻿using FootballLeague.Domain.Base;
+using FootballLeague.Domain.Primitives;
 
 namespace FootballLeague.Domain.Models;
 

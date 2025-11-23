@@ -1,4 +1,4 @@
-﻿namespace FootballLeague.Domain.Results;
+﻿namespace FootballLeague.Domain.Primitives;
 
 public class Result
 {
